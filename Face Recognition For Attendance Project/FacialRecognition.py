@@ -30,27 +30,42 @@ class FaceDetectionAndEncoding:
 
         return face_names, face_encodings
 
+    def RecordedEncodingName():
+        print('Checking Student Faces Availability')
+
+        with open('Student_Face_Encodings/Student_Encodings.dat', 'rb') as f:
+            Checking_Face_Encodings = pickle.load(f)
+
+        Encoding_names = list(Checking_Face_Encodings.keys())
+
+        return Encoding_names
+
     def EncodeStudentFaceEncoding(STUDENT_FACE_ENCODINGS_DIR):
         print('Encoding Student Faces')
 
         Loading_Face_Encoding = {}
-
+        NewAdded = False
+        EncodedIdentities = FaceDetectionAndEncoding.RecordedEncodingName()
+        #print(EncodedIdentities)
         for name in os.listdir(STUDENT_FACE_ENCODINGS_DIR):
-            for filename in os.listdir(f"{STUDENT_FACE_ENCODINGS_DIR}/{name}"):
-                image = face_recognition.load_image_file(f"{STUDENT_FACE_ENCODINGS_DIR}/{name}/{filename}")
-                location = face_recognition.face_locations(image)
-                encoding = face_recognition.face_encodings(image, location)[0]
-                print(encoding)
-                Loading_Face_Encoding [name] = encoding
-
-        with open('Student_Face_Encodings/Student_Encodings.dat', 'wb') as folder:
-            pickle.dump(Loading_Face_Encoding, folder)
+            if name not in EncodedIdentities:
+                print('New Encoding Is being Added')
+                NewAdded = True
+                for filename in os.listdir(f"{STUDENT_FACE_ENCODINGS_DIR}/{name}"):
+                    image = face_recognition.load_image_file(f"{STUDENT_FACE_ENCODINGS_DIR}/{name}/{filename}")
+                    location = face_recognition.face_locations(image)
+                    encoding = face_recognition.face_encodings(image, location)[0]
+                    #print(encoding)
+                    Loading_Face_Encoding [name] = encoding
+        if NewAdded:
+            with open('Student_Face_Encodings/Student_Encodings.dat', 'wb') as folder:
+                pickle.dump(Loading_Face_Encoding, folder)
         print('Done')
 
 
 class Video_IO:
 
-    def GetVideo(path):
+    def GetVideo(path=0):
         print('Getting Video Feed')
         video = VideoCapture(path)
         return video
