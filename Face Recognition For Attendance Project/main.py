@@ -1,12 +1,13 @@
-from FacialRecognition import Video_IO, FaceDetectionAndEncoding
+from FaceDetectionAndEncoding import FaceDetectionAndEncoding
+from Video_IO import Video_IO
 
 FRAME_THICKNESS = 2
 FONT_THICKNESS = 1
 MODEL = 'hog' # Model for recognition (cnn is another better alternative --my GPU sucks--)
-TOLERANCE = 0.6 # Similarity
+TOLERANCE = 0.5 # Similarity
 COLOUR =  [77, 77,200]
 STUDENT_IMAGES_DIR = 'Student_Images'
-TEST_VIDEO_DIRECTORY = 0#'Test_Stuff\TestVids\Obama.mp4'
+TEST_VIDEO_DIRECTORY = 0 #'Test_Stuff\TestVids\obama.mp4'
 
 
 def main(FRAME_THICKNESS=2, FONT_THICKNESS=1, MODEL='hog', TOLERANCE=0.6, COLOUR=[77,77,255], STUDENT_IMAGES_DIR='Student_Images', VIDEO=0):
