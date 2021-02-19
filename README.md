@@ -10,7 +10,7 @@ pip install cmake==3.18.4
 
 pip install numpy==1.14.5
 
-pip install opencv-python==3.4.2.17
+pip install opencv-python
 
 pip install face_recognition==1.3.0
 

@@ -22,7 +22,7 @@ class FaceDetectionAndEncoding:
     def LoadStudentFaceEncoding():
         print('Loading Student Faces \n')
 
-        with open('Student_Encodings.dat', 'rb') as f:
+        with open('Face Recognition For Attendance Project\Student_Encodings.dat', 'rb') as f:
             Loaded_face_encodings = pickle.load(f)
 
         face_names = list(Loaded_face_encodings.keys())
@@ -34,7 +34,7 @@ class FaceDetectionAndEncoding:
     def RecordedEncodingName():
         print('Checking Student Faces Availability \n')
 
-        with open('Student_Encodings.dat', 'rb') as f:
+        with open('Face Recognition For Attendance Project\Student_Encodings.dat', 'rb') as f:
             Checking_Face_Encodings = pickle.load(f)
 
         Encoding_names = list(Checking_Face_Encodings.keys())
@@ -60,7 +60,7 @@ class FaceDetectionAndEncoding:
                     #print(encoding)
                     Loading_Face_Encoding [name] = encoding
         if NewAdded:
-            with open('Student_Encodings.dat', 'wb') as folder:
+            with open('Face Recognition For Attendance Project\Student_Encodings.dat', 'wb') as folder:
                 pickle.dump(Loading_Face_Encoding, folder)
         print('Done')
 
