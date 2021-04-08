@@ -7,14 +7,9 @@ MODEL = 'hog' # Model for recognition (cnn is another better alternative --my GP
 TOLERANCE = 0.5 # Similarity
 COLOUR =  [77, 77,200]
 STUDENT_IMAGES_DIR = 'Student_Images'
-TEST_VIDEO_DIRECTORY = 0 #'Test_Stuff\TestVids\obama.mp4'
 
 
 def main(FRAME_THICKNESS=2, FONT_THICKNESS=1, MODEL='hog', TOLERANCE=0.6, COLOUR=[77,77,255], STUDENT_IMAGES_DIR='Student_Images', VIDEO=0):
-
-    #SavedNames = FaceDetectionAndEncoding.RecordedEncodingName()
-    #print(SavedNames)
-
 
     Confirm = input('Do you want reload encodings? \n(y/n): ')
     while Confirm != 'y' and Confirm != 'n':
@@ -23,7 +18,6 @@ def main(FRAME_THICKNESS=2, FONT_THICKNESS=1, MODEL='hog', TOLERANCE=0.6, COLOUR
     if Confirm == 'y':
         FaceDetectionAndEncoding.EncodeStudentFaceEncoding(STUDENT_IMAGES_DIR)
     
-#    '''
     Name_And_Encodings = FaceDetectionAndEncoding.LoadStudentFaceEncoding()
 
     Student_Names = Name_And_Encodings[0]
@@ -35,6 +29,5 @@ def main(FRAME_THICKNESS=2, FONT_THICKNESS=1, MODEL='hog', TOLERANCE=0.6, COLOUR
         print('Error Getting Video')
     else:
         FaceDetectionAndEncoding.FaceDetection(TOLERANCE, FRAME_THICKNESS, FONT_THICKNESS, COLOUR, MODEL, video, Student_Face_Encodings, Student_Names)
-#    '''
 
 main(FRAME_THICKNESS, FONT_THICKNESS, MODEL, TOLERANCE, COLOUR,STUDENT_IMAGES_DIR, TEST_VIDEO_DIRECTORY)

@@ -2,7 +2,9 @@
 
 You need to install Python 3
 
-The run in your terminal in VS Code or any IDE or text editors:
+Install C++ dependencies from Visual Studio
+
+Then install the following in your terminal in VS Code or any IDE or text editors:
 
 pip install dlib==19.18.0
 

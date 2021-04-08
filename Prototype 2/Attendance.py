@@ -3,7 +3,7 @@ from datetime import datetime
 class Attendance:
 
     def MarkAttendance(name):
-        with open('Face Recognition For Attendance Project\Attendance.csv', 'r+') as f:
+        with open('Prototype 2\Attendance.csv', 'r+') as f:
             AttendanceList = f.readlines()
             NameList = []
             for line in AttendanceList:

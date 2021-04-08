@@ -10,6 +10,7 @@ class Video_IO:
         video = VideoCapture(path)
         return video
 
+
     def DrawRectangle(image, match, color, FRAME_THICKNESS, FONT_THICKNESS, face_locations ):
         # Creates a rectangle around the face
         top_left = (face_locations[3], face_locations[0]) # face_locations = [0*top,1*left,2*botton,3*right]
@@ -21,6 +22,7 @@ class Video_IO:
         bottom_right = (face_locations[1], face_locations[2] + 15)
         rectangle(image, top_left, bottom_right, color, FILLED)
         putText(image, match, (face_locations[3] + 10, face_locations[2] + 10), FONT_HERSHEY_SIMPLEX, 0.5, (250, 250, 250), FONT_THICKNESS)
+
 
     def VideoImageOperator(image, MODEL, STUDENT_FACE_ENCODINGS, TOLERANCE, COLOR, FRAME_THICKNESS, FONT_THICKNESS, STUDENT_NAMES):
         image = resize(image, (0,0), None, .3, .3, INTER_AREA)
