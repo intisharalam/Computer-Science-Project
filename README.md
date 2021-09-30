@@ -6,11 +6,11 @@ Install C++ dependencies from Visual Studio
 
 Then install the following in your terminal in VS Code or any IDE or text editors:
 
-pip install dlib==19.18.0
+pip install dlib
 
-pip install cmake==3.18.4
+pip install build-essential cmake
 
-pip install numpy==1.14.5
+pip install numpy
 
 pip install opencv-python
 
