@@ -13,7 +13,6 @@ FONT_THICKNESS = 1
 MODEL = 'hog'  # Model for recognition cnn/hog
 TOLERANCE = 0.5  # Similarity
 COLOUR = [77, 77, 200] # shade of red
-STUDENT_IMAGES_DIR = 'Student_Images'
 
 # ---------------------------------------------------------
 
@@ -29,21 +28,21 @@ if Confirm == 'y':
     NewAdded = False
     print('Checking Student Faces Availability \n')
 
-    with open('Student_Encodings.dat', 'rb') as f:
+    with open('Prototype 1/Student_Encodings.dat', 'rb') as f:
         Checking_Face_Encodings = pickle.load(f)
 
     EncodedIdentities = list(Checking_Face_Encodings.keys())
-    for name in os.listdir(STUDENT_IMAGES_DIR):
+    for name in os.listdir('Prototype 1/Student_Images'):
         if name not in EncodedIdentities:
             print('New Encoding Is being Added \n')
             NewAdded = True
-            for filename in os.listdir(f"{STUDENT_IMAGES_DIR}/{name}"):
-                image = face_recognition.load_image_file(f"{STUDENT_IMAGES_DIR}/{name}/{filename}")
+            for filename in os.listdir(f"Prototype 1/Student_Images/{name}"):
+                image = face_recognition.load_image_file(f"Prototype 1/Student_Images/{name}/{filename}")
                 location = face_recognition.face_locations(image)
                 encoding = face_recognition.face_encodings(image, location)[0]
                 Loading_Face_Encoding[name] = encoding
     if NewAdded:
-        with open('Student_Encodings.dat', 'wb') as folder:
+        with open('Prototype 1/Student_Encodings.dat', 'rb') as folder:
             pickle.dump(Loading_Face_Encoding, folder)
     print('Done')
 
@@ -51,7 +50,7 @@ if Confirm == 'y':
 
 print('Loading Student Faces \n')
 
-with open('Student_Encodings.dat', 'rb') as f:
+with open('Prototype 1/Student_Encodings.dat', 'rb') as f:
     Loaded_face_encodings = pickle.load(f)
 
     face_names = list(Loaded_face_encodings.keys())
@@ -62,6 +61,8 @@ Name_And_Encodings = face_names, face_encodings
 Student_Names = Name_And_Encodings[0]
 Student_Face_Encodings = Name_And_Encodings[1]
 
+print('Loaded Student Faces \n')
+
 # ---------------------------------------------------------
 
 print('Getting Video Feed \n')
@@ -70,6 +71,7 @@ video = VideoCapture(0)
 if video is None:
     print('Error Getting Video')
 else:
+    print('Video Received \n')
 
 # ---------------------------------------------------------
 
@@ -77,12 +79,10 @@ else:
 
     while True:
         ret, image = video.read()
-        image = resize(image, (0, 0), None, .5, .5, INTER_AREA)
+        image = resize(image, (0, 0), None, .75, .75, INTER_AREA)
         image = cv2.flip(image, 1)  # not use cv2.rotate(img, deg) / -1 flips it over
         locations = face_recognition.face_locations(image, model=MODEL)
         encodings = face_recognition.face_encodings(image, locations)
-
-# ---------------------------------------------------------
 
         for face_encoding, face_locations in zip(encodings, locations):
             results = compare_faces(Student_Face_Encodings, face_encoding, TOLERANCE)
@@ -91,7 +91,7 @@ else:
             if True in results:
                 # match is the name of the identity found
                 match = Student_Names[results.index(True)]
-                with open('Attendance.csv', 'r+') as f:
+                with open('Prototype 1/Attendance.csv', 'r+') as f:
                     AttendanceList = f.readlines()
                     NameList = []
                     for line in AttendanceList:
@@ -101,6 +101,8 @@ else:
                         now = datetime.now()
                         CurrentString = now.strftime('%H:%M')
                         f.writelines(f'\n{name},{CurrentString}')
+
+                        
                 print(f"Match found: {match}")
                 # Creates a rectangle around the face
                 top_left = (face_locations[3], face_locations[0])  # face_locations = [0*top,1*left,2*botton,3*right]
