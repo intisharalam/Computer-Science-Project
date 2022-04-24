@@ -28,21 +28,21 @@ if Confirm == 'y':
     NewAdded = False
     print('Checking Student Faces Availability \n')
 
-    with open('Prototype 1/Student_Encodings.dat', 'rb') as f:
+    with open('FaceRecog/Student_Encodings.dat', 'rb') as f:
         Checking_Face_Encodings = pickle.load(f)
 
     EncodedIdentities = list(Checking_Face_Encodings.keys())
-    for name in os.listdir('Prototype 1/Student_Images'):
+    for name in os.listdir('FaceRecog/Student_Images'):
         if name not in EncodedIdentities:
             print('New Encoding Is being Added \n')
             NewAdded = True
-            for filename in os.listdir(f"Prototype 1/Student_Images/{name}"):
-                image = face_recognition.load_image_file(f"Prototype 1/Student_Images/{name}/{filename}")
+            for filename in os.listdir(f"FaceRecog/Student_Images/{name}"):
+                image = face_recognition.load_image_file(f"FaceRecog/Student_Images/{name}/{filename}")
                 location = face_recognition.face_locations(image)
                 encoding = face_recognition.face_encodings(image, location)[0]
                 Loading_Face_Encoding[name] = encoding
     if NewAdded:
-        with open('Prototype 1/Student_Encodings.dat', 'rb') as folder:
+        with open('FaceRecog/Student_Encodings.dat', 'rb') as folder:
             pickle.dump(Loading_Face_Encoding, folder)
     print('Done')
 
@@ -50,7 +50,7 @@ if Confirm == 'y':
 
 print('Loading Student Faces \n')
 
-with open('Prototype 1/Student_Encodings.dat', 'rb') as f:
+with open('FaceRecog/Student_Encodings.dat', 'rb') as f:
     Loaded_face_encodings = pickle.load(f)
 
     face_names = list(Loaded_face_encodings.keys())
@@ -91,7 +91,7 @@ else:
             if True in results:
                 # match is the name of the identity found
                 match = Student_Names[results.index(True)]
-                with open('Prototype 1/Attendance.csv', 'r+') as f:
+                with open('FaceRecog/Attendance.csv', 'r+') as f:
                     AttendanceList = f.readlines()
                     NameList = []
                     for line in AttendanceList:

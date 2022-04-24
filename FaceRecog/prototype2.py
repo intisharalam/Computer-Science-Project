@@ -39,7 +39,7 @@ def Contri():
 
 def alertSFX():
    mixer.init()
-   alert=mixer.Sound('Prototype 1/beep-07.wav')
+   alert=mixer.Sound('FaceRecog/beep-07.wav')
    alert.play()
 
 def About():
@@ -54,9 +54,9 @@ def saveAndClear():
    
    # Saves the file
    now = datetime.now()
-   src = '/home/intishar/Documents/GitHub/Computer-Science-Project/Prototype 1/Attendance.csv'
+   src = '/home/intishar/Documents/GitHub/Computer-Science-Project/FaceRecog/Attendance.csv'
    newFileName = now.strftime('%a_%d_%b_%Y')
-   dst = f'/home/intishar/Documents/GitHub/Computer-Science-Project/Prototype 1/SavedAttendance/Attendance-{newFileName}'
+   dst = f'/home/intishar/Documents/GitHub/Computer-Science-Project/FaceRecog/SavedAttendance/Attendance-{newFileName}'
 
    with open(dst, 'w') as fp:
       pass
@@ -76,7 +76,7 @@ def saveAndClear():
 
 
 def Attendance(name):
-   with open('Prototype 1/Attendance.csv', 'r+') as f:
+   with open('FaceRecog/Attendance.csv', 'r+') as f:
       AttendanceList = f.readlines()
       NameList = []
 
@@ -106,7 +106,7 @@ def drawBox(img,frame_thickness, font_thickness, txt, faceLoc):
 
 def loadEncodings():
    # Loads face encodings stored in .dat file
-   with open('Prototype 1/Student_Encodings.dat', 'rb') as f:
+   with open('FaceRecog/Student_Encodings.dat', 'rb') as f:
       Loaded_face_encodings = pickle.load(f)
 
       face_names = list(Loaded_face_encodings.keys())
@@ -119,38 +119,38 @@ def encodeFaces():
    Loading_Face_Encoding = {}
    NewAdded = False
 
-   checkFile = 'Prototype 1/Student_Encodings.dat'
+   checkFile = 'FaceRecog/Student_Encodings.dat'
 
    if os.path.isfile(checkFile):
       if os.path.getsize(checkFile) > 0:
-         with open('Prototype 1/Student_Encodings.dat', 'rb') as f:
+         with open('FaceRecog/Student_Encodings.dat', 'rb') as f:
             Checking_Face_Encodings = pickle.load(f)
 
          EncodedIdentities = list(Checking_Face_Encodings.keys())
-         for name in os.listdir('Prototype 1/Student_Images'):
+         for name in os.listdir('FaceRecog/Student_Images'):
             if name not in EncodedIdentities:
                NewAdded = True
-               for filename in os.listdir(f"Prototype 1/Student_Images/{name}"):
-                  image = face_recognition.load_image_file(f"Prototype 1/Student_Images/{name}/{filename}")
+               for filename in os.listdir(f"FaceRecog/Student_Images/{name}"):
+                  image = face_recognition.load_image_file(f"FaceRecog/Student_Images/{name}/{filename}")
                   location = face_recognition.face_locations(image)
                   encoding = face_recognition.face_encodings(image, location)[0]
                   Loading_Face_Encoding[name] = encoding
          if NewAdded:
-            with open('Prototype 1/Student_Encodings.dat', 'rb') as folder:
+            with open('FaceRecog/Student_Encodings.dat', 'rb') as folder:
                pickle.dump(Loading_Face_Encoding, folder)
          popUp('Done')
       else:
-         for name in os.listdir('Prototype 1/Student_Images'):
-            for filename in os.listdir(f"Prototype 1/Student_Images/{name}"):
-               image = face_recognition.load_image_file(f"Prototype 1/Student_Images/{name}/{filename}")
+         for name in os.listdir('FaceRecog/Student_Images'):
+            for filename in os.listdir(f"FaceRecog/Student_Images/{name}"):
+               image = face_recognition.load_image_file(f"FaceRecog/Student_Images/{name}/{filename}")
                location = face_recognition.face_locations(image)
                encoding = face_recognition.face_encodings(image, location)[0]
                Loading_Face_Encoding[name] = encoding
-         with open('Prototype 1/Student_Encodings.dat', 'wb') as folder:
+         with open('FaceRecog/Student_Encodings.dat', 'wb') as folder:
                pickle.dump(Loading_Face_Encoding, folder)
          popUp('Done')
    else:
-      File = open('Prototype 1/Student_Encodings.dat', 'a')
+      File = open('FaeRecog/Student_Encodings.dat', 'a')
       File.close()
       popUp("Student Face encodings does not exist \n so new ones are being created. Please Click again to encode fully!")
 
