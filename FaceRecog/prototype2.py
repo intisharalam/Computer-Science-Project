@@ -4,6 +4,7 @@ from cv2 import imshow, waitKey, cv2
 from datetime import datetime
 from pygame import mixer
 import face_recognition
+from tkinter import messagebox
 from tkinter import *
 from yaml import load
 import numpy as np
@@ -37,13 +38,20 @@ def popUp(msg):
 def Contri():
    tkinter.messagebox.showinfo("Contributors","\n1.Intishar Alam Misbahul\n2.Google\n3.YouTube")
 
+def About():
+   tkinter.messagebox.showinfo("About",'Face Recognition for Attendance v1.0\n Made Using\n-OpenCV\n-Numpy\n-Tkinter\n In Python 3')
+
+def Guide():
+   tkinter.messagebox.showinfo(
+      "Guide", 
+      "\n1. Open Cam - feeds video input from default camera. Show your face to the camera and it will beep if it recognises you.\n2. Encode New Faces - Updates Encoded images file.\n3. Save and Clear - Copies attendance file to SavedAttendance folder and clears all previous attendance record."
+      )
+
 def alertSFX():
    mixer.init()
    alert=mixer.Sound('FaceRecog/beep-07.wav')
    alert.play()
 
-def About():
-   tkinter.messagebox.showinfo("About",'Face Recognition for Attendance v1.0\n Made Using\n-OpenCV\n-Numpy\n-Tkinter\n In Python 3')
 
 # exit function
 def Exitt():
@@ -73,6 +81,8 @@ def saveAndClear():
    # Clears the file
    original = open(src,"w")
    original.close()
+
+   popUp('Done')
 
 
 def Attendance(name):
@@ -155,7 +165,7 @@ def encodeFaces():
       popUp("Student Face encodings does not exist \n so new ones are being created. Please Click again to encode fully!")
 
 # Face recognition related functions
-def Vid():
+def faceRecAndVid():
 
    FRAME_THICKNESS = 2
    FONT_THICKNESS = 1
@@ -198,6 +208,7 @@ def Vid():
             if waitKey(1) & 0xFF == ord("q"):
                video.release()
                cv2.destroyWindow('Test')
+               popUp('Done')
                break
          else:
             video.release()
@@ -215,18 +226,22 @@ subm1.add_command(label="Software",command=About)
 subm1.add_command(label="Contributors",command=Contri)
 menu.add_cascade(label="About",menu=subm1)
 
+subm2 = Menu(menu)
+subm2.add_command(label="Guide",command=Guide)
+menu.add_cascade(label="Help",menu=subm2)
 
-but1=Button(frame,padx=5,pady=5,width=25,bg='white',fg='black',relief=GROOVE,command=Vid,text='Open Cam',font=('helvetica 15 bold'))
+
+but1=Button(frame,padx=5,pady=5,width=25,bg='white',fg='black',relief=GROOVE,command=faceRecAndVid,text='Open Cam',font=('helvetica 15 bold'))
 but1.place(x=100,y=100)
 
 but2=Button(frame,padx=5,pady=5,width=25,bg='white',fg='black',relief=GROOVE,command=encodeFaces,text='Encode New Faces',font=('helvetica 15 bold'))
 but2.place(x=100,y=180)
 
-but3=Button(frame,padx=5,pady=5,width=25,bg='white',fg='black',relief=GROOVE,command=saveAndClear,text='Save and Clear Attandance',font=('helvetica 15 bold'))
+but3=Button(frame,padx=5,pady=5,width=25,bg='white',fg='black',relief=GROOVE,command=saveAndClear,text='Save and Clear',font=('helvetica 15 bold'))
 but3.place(x=100,y=260)
 
-but5=Button(frame,padx=5,pady=5,width=5,bg='white',fg='black',relief=GROOVE,text='EXIT',command=Exitt,font=('helvetica 15 bold'))
-but5.place(x=210,y=360)
+but4=Button(frame,padx=5,pady=5,width=5,bg='white',fg='black',relief=GROOVE,text='EXIT',command=Exitt,font=('helvetica 15 bold'))
+but4.place(x=210,y=360)
 
 
 root.mainloop()
