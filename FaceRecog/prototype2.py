@@ -174,7 +174,15 @@ def faceRecAndVid():
    COLOUR = [77, 77, 200] # shade of red
 
 
-   Student_Names, Student_Face_Encodings = loadEncodings()
+# Loads face encodings stored in .dat file
+   with open('FaceRecog/Student_Encodings.dat', 'rb') as f:
+      Loaded_face_encodings = pickle.load(f)
+
+      face_names = list(Loaded_face_encodings.keys())
+      face_encodings = np.array(list(Loaded_face_encodings.values()))
+   f.close()
+
+   Student_Names, Student_Face_Encodings = face_names, face_encodings
 
    video = VideoCapture(0)
 
