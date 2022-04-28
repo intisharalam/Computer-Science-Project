@@ -1,6 +1,7 @@
 from cv2 import VideoCapture, rectangle, putText, resize, FONT_HERSHEY_SIMPLEX, INTER_AREA, FILLED
 from face_recognition import compare_faces, face_locations, face_encodings
 from cv2 import imshow, waitKey, cv2
+from tkinter import messagebox
 from datetime import datetime
 from pygame import mixer
 import face_recognition
@@ -52,10 +53,10 @@ def alertSFX():
    alert=mixer.Sound('FaceRecog/beep-07.wav')
    alert.play()
 
-
 # exit function
 def Exitt():
    exit()
+
 
 
 def saveAndClear():
@@ -83,7 +84,6 @@ def saveAndClear():
    original.close()
 
    popUp('Done')
-
 
 def Attendance(name):
    with open('FaceRecog/Attendance.csv', 'r+') as f:
@@ -113,16 +113,6 @@ def drawBox(img,frame_thickness, font_thickness, txt, faceLoc):
    bottom_right = (faceLoc[1], faceLoc[2] + 15)
    rectangle(img, top_left, bottom_right, [77, 77, 255], FILLED)
    putText(img, txt, (faceLoc[3] + 10, faceLoc[2] + 10), FONT_HERSHEY_SIMPLEX, 0.5, (250, 250, 250), font_thickness)
-
-def loadEncodings():
-   # Loads face encodings stored in .dat file
-   with open('FaceRecog/Student_Encodings.dat', 'rb') as f:
-      Loaded_face_encodings = pickle.load(f)
-
-      face_names = list(Loaded_face_encodings.keys())
-      face_encodings = np.array(list(Loaded_face_encodings.values()))
-   f.close()
-   return face_names, face_encodings
 
 def encodeFaces():
 
