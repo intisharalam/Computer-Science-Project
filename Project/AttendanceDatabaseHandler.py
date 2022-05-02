@@ -14,7 +14,7 @@ class AttendanceDB:
         self.src = self.PATH / 'Attendance.csv' # path to attendance file
         self.dst = self.PATH / 'SavedAttendance' / f'Attendance-{self.curDate}.csv' # path for SavedAttendance directory
         
-        self.notify = Notify()
+        self.notify = Notify()  # initiates Notify class object
     
     def update_Attendance(self, name):
         if self.src.exists():   # checks if attendance.csv file exists
@@ -45,6 +45,6 @@ class AttendanceDB:
             origFile.close()
             copyFile.close()
             
-            self.notify.popUp(f'\nSaved as: \nAttendance-{self.curDate}.csv\n\n# Note: Copies are replaced')
+            self.notify.popUp(f'\nSaved as: \nAttendance-{self.curDate}.csv\n\n# Note: Copies are replaced')    # Notifies user
         else:
-            self.notify.popUp('No file to save!', 2000)
+            self.notify.popUp('No file to save!', 2000) # Notifies user

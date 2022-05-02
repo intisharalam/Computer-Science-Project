@@ -1,8 +1,7 @@
-from tkinter import Frame, messagebox
+from tkinter import messagebox
 import tkinter as tk
-from unittest import result
 import PIL.Image, PIL.ImageTk
-from cv2 import CAP_PROP_FRAME_HEIGHT, CAP_PROP_FRAME_WIDTH, COLOR_BGR2RGB, VideoCapture, cvtColor, destroyAllWindows, destroyWindow, flip, imshow, waitKey
+from cv2 import CAP_PROP_FRAME_HEIGHT, CAP_PROP_FRAME_WIDTH, COLOR_BGR2RGB, VideoCapture, cvtColor, flip
 from EncodingsDatabaseHandler import EncodingsDB
 from AttendanceDatabaseHandler import AttendanceDB
 from NotificationSystem import Notify
@@ -60,8 +59,10 @@ class MainScreen(tk.Frame):
         # inherit __init__ function from tk.Tk class
         tk.Frame.__init__(self, parent)
         
+        # set background to black
         self.config(background = 'black')
         
+        # initiating classes
         self.encodingsManager = EncodingsDB()
         self.attendanceManager = AttendanceDB()
         self.notify = Notify()
@@ -74,7 +75,7 @@ class MainScreen(tk.Frame):
         self.grid_rowconfigure(2, weight=1)
         self.grid_rowconfigure(3, weight=1)
         
-        
+        # menu buttons
         but1=tk.Button(self,padx=5,pady=5,height=2,width=15,bg='white',fg='black',relief='groove',text='Open Cam',font=('helvetica 15 bold'),command=lambda : controller.showFrame(VideoFeed))
         but1.grid(column=0, row=0)
 
@@ -87,9 +88,11 @@ class MainScreen(tk.Frame):
         but4=tk.Button(self,padx=5,pady=5,height=2,width=15,bg='white',fg='black',relief='groove',text='EXIT',font=('helvetica 15 bold'),command=lambda :self.Eexit())
         but4.grid(column=0, row=3)
     
+    # for stopping the software
     def Eexit(self):
         exit()
     
+    # creates the menubar
     def menuBar(self, root):
             
         menubar = tk.Menu(root, bd = 100)
@@ -107,6 +110,7 @@ class MainScreen(tk.Frame):
         
         return menubar
     
+    # menu elements
     def aboutSoftware(self):
         messagebox.showinfo('Software', 'Face Recognition for Attendance v1.0\n Made Using:\n-OpenCV\n-Numpy\n-Tkinter In Python 3')
     
@@ -122,31 +126,38 @@ class VideoFeed(tk.Frame):
         # inherit __init__ function from tk.Tk class
         tk.Frame.__init__(self, parent)
         
+        # bacground set to black
         self.config(background = 'black')
         
         self.controller = controller
         
+        # delay per frame
         self.delay = 15
         
+        # creates the canvas
         self.canvas = tk.Canvas(self, width = 500, height = 500)
         self.canvas.grid(column=0, row=0, columnspan=2)
         
+        # configuring the grid
         self.grid_columnconfigure(0, weight=1, uniform='name')
         self.grid_columnconfigure(1, weight=1, uniform='name')
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
         
+        # buttons
         self.but1=tk.Button(self,padx=5,pady=5,width=20,height=2,bg='white',fg='black',relief='groove',text='START',font=('helvetica 15 bold'),command= lambda : self.start())
         self.but1.grid(column=0, row=1, padx=15)
         
         self.but2=tk.Button(self,padx=5,pady=5,width=20,height=2,bg='white',fg='black',relief='groove',text='RETURN',font=('helvetica 15 bold'),command= lambda : self.cancel())
         self.but2.grid(column=1, row=1, padx=15)
-        
+    
+    # starts the camera
     def start(self):
         self.vid = myVideoCapture(0)
         self.myUpdate()
         pass
     
+    # closes the window
     def cancel(self):
         self.controller.showFrame(MainScreen)
         self.canvas.delete("all")
@@ -155,6 +166,7 @@ class VideoFeed(tk.Frame):
             self.after_cancel(self.repeatJob)
             self._job = None
 
+    # updates canvas with image
     def myUpdate(self):
         ret, frame = self.vid.getFrame()
         
@@ -165,7 +177,7 @@ class VideoFeed(tk.Frame):
         self.repeatJob = self.after(self.delay, self.myUpdate)
 
 
-
+    # same menu as before
     def menuBar(self, root):
             
         menubar = tk.Menu(root, bd = 100)
@@ -197,30 +209,33 @@ class myVideoCapture:
         # open video source
         self.video = VideoCapture(videoSource)
         
+        # initialises classes
         self.faceRecog = FaceRecognition()
         self.attendanceManager = AttendanceDB()
         self.notify = Notify()
         
+        # validates camera access
         if not self.video.isOpened():
             self.notify.popUp('Unable to open video source', 3000)
-        
-        # get video source width and height
-        self.width = self.video.get(CAP_PROP_FRAME_HEIGHT)
-        self.height = self.video.get(CAP_PROP_FRAME_WIDTH)
 
     def getFrame(self):
         # validates if camera was opened or not
         if self.video.isOpened():
             ret, frame = self.video.read()
             if ret:
+                # flips image
                 frame = flip(frame, 1)
                 
+                # detects face and rturns name of face and location
                 result = self.faceRecog.faceDetect(frame)
                 
                 if result != None:
                     faceLocation, matchName = result
+                    # updates student's attendance
                     self.attendanceManager.update_Attendance(matchName)
+                    # draws box around face
                     self.faceRecog.drawBox(frame, faceLocation, matchName)
+                    # makes a beep sound for notification
                     self.notify.alertSFX()
                 
                 # returns a boolean flag and current frame converted to BGR
@@ -232,6 +247,7 @@ class myVideoCapture:
 
     # Release video source when object is destroyed
     def close(self):
+        # closes the camera
         if self.video.isOpened():
             self.video.release()
 

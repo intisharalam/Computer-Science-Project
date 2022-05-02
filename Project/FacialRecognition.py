@@ -1,8 +1,5 @@
-import encodings
 import face_recognition
-from cv2 import rectangle, putText, resize, FONT_HERSHEY_SIMPLEX, FILLED, INTER_AREA, waitKey
-# from pathlib import Path
-from cv2 import imshow, cv2, VideoCapture, destroyWindow
+from cv2 import rectangle, putText, FONT_HERSHEY_SIMPLEX, FILLED
 import numpy as np
 from EncodingsDatabaseHandler import EncodingsDB
 
@@ -17,6 +14,7 @@ class FaceRecognition:
     FONT_SIZE = 0.55 # Label font size
     
     def __init__(self):
+        # initiates variables and classe for use
         self.frameThickness = self.FRAME_THICKNESS
         self.fontThickness = self.FONT_THICKNESS
         self.boxColour = self.FRAME_COLOUR
@@ -45,18 +43,19 @@ class FaceRecognition:
         putText(img, text, (textXPos, textYPos), FONT_HERSHEY_SIMPLEX, self.FONT_SIZE, self.txtColour, self.fontThickness)
 
     def faceDetect(self, img):
+        # gets face location in the image and its encodings
         faceLocations = face_recognition.face_locations(img)
         faceEncodings = face_recognition.face_encodings(img, faceLocations)
         
+        # loops thorugh list of ecodings from the database for any match
         for face_encoding, face_location in zip(faceEncodings, faceLocations):
             results = face_recognition.compare_faces(self.encodingsList, face_encoding)
             matchName = None
 
+            # returns match name and its face location
             if True in results:
-                # match is the name of the identity found
                 matchName = self.nameList[results.index(True)]
-        
                 return face_location, matchName
+            
+        # returns nothing if no match found
         return None
-
-# https://www.schemecolor.com/high-contrasts.php link to colour scheme

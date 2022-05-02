@@ -16,10 +16,10 @@ class Notify:
         alert.play()
 
     def popUp(self, msg='TEST TEXT', delay=5000):
-        popup = Tk()
-        popup.title(self.win_title)
-        label = Label(popup, text=msg,font=("Courier", 13))
-        label.pack(side='top', fill='x', pady=10)
+        popup = Tk()    # creates a tkinter windpw/widget object
+        popup.title(self.win_title) # title set as initiated
+        label = Label(popup, text=msg,font=("Courier", 13)) # creates label for displaying message
+        label.pack(side='top', fill='x', pady=10)   # formats the label
 
-        popup.after(delay, lambda: popup.destroy())
+        popup.after(delay, lambda: popup.destroy()) # destroys the window after set amount of delay
         popup.mainloop()
